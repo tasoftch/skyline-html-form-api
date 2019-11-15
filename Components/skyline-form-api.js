@@ -32,9 +32,39 @@
  */
 
 $(function() {
-    if(!window.Skyline && !window.Skyline.API)
+    if(!window.Skyline || !window.Skyline.API)
         console.error("You need to install skyline/component-api before using the skyline/html-form-api package.");
     else {
+        window.Skyline.API.Form = function(targetAPI, fd, successFunction, errorFunction) {
+            window.Skyline.API.post(targetAPI, fd)
+                .success(function(data) {
+                    var ok = true;
 
+                    if(data["skyline-validation"]) {
+                        for(var nam in data["skyline-validation"]) {
+                            $control = $( document.getElementsByName( nam ) );
+                            if($control.length > 0) {
+                                if(data["skyline-validation"][nam]) {
+                                    $control.removeClass( $control.attr("data-skyline-invalid") );
+                                    $control.addClass( $control.attr("data-skyline-valid") );
+                                } else {
+                                    ok = false;
+                                    $control.removeClass( $control.attr("data-skyline-valid") );
+                                    $control.addClass( $control.attr("data-skyline-invalid") );
+                                }
+                            }
+                        }
+                    }
+                    if(ok && successFunction)
+                        window.setTimeout(successFunction, 1, data, true);
+                    else if(!ok)
+                        window.setTimeout(errorFunction, 1, data, true);
+                })
+                .error(function(error) {
+                    if(errorFunction)
+                        window.setTimeout(errorFunction, 1, error, false);
+                })
+                .button(".action-button")
+        }
     }
 });

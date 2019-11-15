@@ -36,8 +36,41 @@ namespace Skyline\HTML\Form\Controller;
 
 
 use Skyline\API\Controller\AbstractAPIActionController;
+use Skyline\API\Render\JSONRender;
+use Skyline\HTML\Form\Control\AbstractControl;
+use Skyline\HTML\Form\Control\ActionControlInterface;
+use Skyline\HTML\Form\FormElement;
+use Skyline\Render\Info\RenderInfoInterface;
+use Skyline\Router\Description\ActionDescriptionInterface;
 
 abstract class AbstractFormAPIActionController extends AbstractAPIActionController
 {
+    public function performAction(ActionDescriptionInterface $actionDescription, RenderInfoInterface $renderInfo)
+    {
+        if(!$this->isPreflightRequest($this->request)) {
+            $renderInfo->set( RenderInfoInterface::INFO_PREFERRED_RENDER, JSONRender::JSON_RENDER_NAME);
+        }
+        return parent::performAction($actionDescription, $renderInfo);
+    }
 
+    /**
+     * Your API controller should call this method to generate model entries describing, which elements are valid and which are invalid.
+     * The Skyline CMS API-Form component knows how to handle and marks the elements as valid or invalid.
+     * If the form is valid and verified, this method returns true, otherwise false.
+     * In addition, it will update the API data model with the validation status.
+     *
+     * @param FormElement $element
+     */
+    protected function writeValidationToModel(FormElement $element) {
+        if($element->isValidated()) {
+            $validation = [];
+
+            foreach($element->getChildElements() as $control) {
+                if($control instanceof AbstractControl && !($control instanceof ActionControlInterface)) {
+                    $validation[ $control->getName() ] = $control->isValid();
+                }
+            }
+            $this->getModel()['skyline-validation'] = $validation;
+        }
+    }
 }
