@@ -39,9 +39,14 @@ use Skyline\API\Controller\AbstractAPIActionController;
 use Skyline\API\Render\JSONRender;
 use Skyline\HTML\Form\Control\AbstractControl;
 use Skyline\HTML\Form\Control\ActionControlInterface;
+use Skyline\HTML\Form\Control\Button\ActionButtonControl;
+use Skyline\HTML\Form\FormData;
 use Skyline\HTML\Form\FormElement;
+use Skyline\Kernel\Service\SkylineServiceManager;
 use Skyline\Render\Info\RenderInfoInterface;
 use Skyline\Router\Description\ActionDescriptionInterface;
+use TASoft\DI\Injector\CallbackInjector;
+use TASoft\Service\ServiceManager;
 
 abstract class AbstractFormAPIActionController extends AbstractAPIActionController
 {
@@ -72,5 +77,40 @@ abstract class AbstractFormAPIActionController extends AbstractAPIActionControll
             }
             $this->getModel()['skyline-validation'] = $validation;
         }
+    }
+
+    /**
+     * Checks the form and if valid, performs the action sent by post.
+     * This method will perform the action under dependency injection.
+     *
+     * @param FormElement $form
+     * @return bool
+     */
+    protected function performFormAction(FormElement $form) {
+        $request = $this->request;
+
+        if($form->isValidated() && $form->isValid()) {
+            foreach($form->getActionControls() as $control) {
+                if($request->request->has($control->getName())) {
+                    $dm = SkylineServiceManager::getDependencyManager();
+                    return $dm->pushGroup(function() use ($dm, $form, $control) {
+                        $dm->addDependencyInjector(new CallbackInjector(function($type, $name) use ($form) {
+                            if($name == 'data' || $name == 'formData')
+                                return new FormData($form->getData());
+                            if($type == FormData::class)
+                                return new FormData($form->getData());
+                            return NULL;
+                        }));
+
+                        $cb = [$control, 'performAction'];
+                        if($control instanceof ActionButtonControl)
+                            $cb = $control->getActionCallback();
+
+                        return $dm->call($cb);
+                    });
+                }
+            }
+        }
+        return false;
     }
 }
