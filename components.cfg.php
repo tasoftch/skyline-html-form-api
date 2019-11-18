@@ -45,5 +45,8 @@ return [
             NULL,
             CompilerContext::getCurrentCompiler()->getRelativeProjectPath($apiFileJS)
         ),
+        "@require" => [
+            "API"
+        ]
     ]
 ];
