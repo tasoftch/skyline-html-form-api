@@ -72,7 +72,10 @@ abstract class AbstractFormAPIActionController extends AbstractAPIActionControll
 
             foreach($element->getChildElements() as $control) {
                 if($control instanceof AbstractControl && !($control instanceof ActionControlInterface)) {
-                    $validation[ $control->getName() ] = $control->isValid();
+                    $validation[ $control->getName() ] = [
+                        'valid' => $control->isValid(),
+                        'tag' => method_exists($control->getStoppedValidator(), 'getTag') ? $control->getStoppedValidator()->getTag() : 0
+                    ];
                 }
             }
             $this->getModel()['skyline-validation'] = $validation;

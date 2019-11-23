@@ -41,16 +41,22 @@ $(function() {
                     var ok = true;
 
                     if(data["skyline-validation"]) {
-                        for(var nam in data["skyline-validation"]) {
+                        for(const nam in data["skyline-validation"]) {
                             $control = $( document.getElementsByName( nam ) );
                             if($control.length > 0) {
-                                if(data["skyline-validation"][nam]) {
+                                if(data["skyline-validation"][nam].valid) {
                                     $control.removeClass( $control.attr("data-skyline-invalid") );
                                     $control.addClass( $control.attr("data-skyline-valid") );
                                 } else {
                                     ok = false;
                                     $control.removeClass( $control.attr("data-skyline-valid") );
                                     $control.addClass( $control.attr("data-skyline-invalid") );
+                                }
+
+                                var tag = data["skyline-validation"][nam].tag;
+                                $control.parent().removeClass("skyline-tagged-feedback");
+                                if(tag!=0) {
+                                    $control.parent().addClass("skyline-tagged-feedback").addClass("fb-"+tag);
                                 }
                             }
                         }

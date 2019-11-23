@@ -1,5 +1,4 @@
-<?php
-/**
+/*
  * BSD 3-Clause License
  *
  * Copyright (c) 2019, TASoft Applications
@@ -32,30 +31,29 @@
  *
  */
 
-use Skyline\Compiler\CompilerContext;
-use Skyline\Component\Config\CSSComponent;
-use Skyline\Component\Config\JavaScriptPostLoadComponent;
+.skyline-tagged-feedback {
+}
 
-$apiFileJS = __DIR__ . "/Components/skyline-form-api.js";
-$apiFileCSS = __DIR__ . "/Components/skyline-form-api.css";
+.skyline-tagged-feedback .fb-1,
+.skyline-tagged-feedback .fb-2,
+.skyline-tagged-feedback .fb-3,
+.skyline-tagged-feedback .fb-4,
+.skyline-tagged-feedback .fb-5 {
+    display: none !important;
+}
 
-return [
-    "API-Form" => [
-        "js" => new JavaScriptPostLoadComponent(
-            "/Public/js/skyline-form-api.js",
-            'sha384-'.hash_file("sha384", $apiFileJS),
-            NULL,
-            CompilerContext::getCurrentCompiler()->getRelativeProjectPath($apiFileJS)
-        ),
-        "css" => new CSSComponent(
-            "/Public/css/skyline-form-api.css",
-            'all',
-            'sha384-'.hash_file("sha384", $apiFileCSS),
-            NULL,
-            CompilerContext::getCurrentCompiler()->getRelativeProjectPath($apiFileCSS)
-        ),
-        "@require" => [
-            "API"
-        ]
-    ]
-];
+.skyline-tagged-feedback.fb-1 .fb-1 {
+    display: block !important;
+}
+.skyline-tagged-feedback.fb-2 .fb-2 {
+    display: block !important;
+}
+.skyline-tagged-feedback.fb-3 .fb-3 {
+    display: block !important;
+}
+.skyline-tagged-feedback.fb-4 .fb-4 {
+    display: block !important;
+}
+.skyline-tagged-feedback.fb-5 .fb-5 {
+    display: block !important;
+}
