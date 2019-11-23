@@ -54,7 +54,14 @@ $(function() {
                                 }
 
                                 var tag = data["skyline-validation"][nam].tag;
-                                $control.parent().removeClass("skyline-tagged-feedback");
+                                $control.parent()
+                                    .removeClass("skyline-tagged-feedback")
+                                    .removeClass("fb-1")
+                                    .removeClass("fb-2")
+                                    .removeClass("fb-3")
+                                    .removeClass("fb-4")
+                                    .removeClass("fb-5");
+
                                 if(tag!=0) {
                                     $control.parent().addClass("skyline-tagged-feedback").addClass("fb-"+tag);
                                 }
