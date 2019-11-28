@@ -46,7 +46,6 @@ use Skyline\Kernel\Service\SkylineServiceManager;
 use Skyline\Render\Info\RenderInfoInterface;
 use Skyline\Router\Description\ActionDescriptionInterface;
 use TASoft\DI\Injector\CallbackInjector;
-use TASoft\Service\ServiceManager;
 
 abstract class AbstractFormAPIActionController extends AbstractAPIActionController
 {
@@ -68,18 +67,37 @@ abstract class AbstractFormAPIActionController extends AbstractAPIActionControll
      */
     protected function writeValidationToModel(FormElement $element) {
         if($element->isValidated()) {
-            $validation = [];
-
             foreach($element->getChildElements() as $control) {
                 if($control instanceof AbstractControl && !($control instanceof ActionControlInterface)) {
-                    $validation[ $control->getName() ] = [
-                        'valid' => $control->isValid(),
-                        'tag' => method_exists($control->getStoppedValidator(), 'getTag') ? $control->getStoppedValidator()->getTag() : 0
-                    ];
+                    $this->writeRawValidationToModel(
+                        $control->getName(),
+                        $control->isValid(),
+                        method_exists($control->getStoppedValidator(), 'getTag') ? $control->getStoppedValidator()->getTag() : 0
+                    );
                 }
             }
-            $this->getModel()['skyline-validation'] = $validation;
         }
+    }
+
+    /**
+     * Writes a form validation field to the model.
+     * Using skyline/html-form-api the javascript component is able to mark the field.
+     *
+     * @param string $fieldName
+     * @param bool $isValid
+     * @param int $errorTag
+     * @return bool
+     */
+    protected function writeRawValidationToModel(string $fieldName, bool $isValid = true, int $errorTag = 0) {
+        $validation = $this->getModel()['skyline-validation'] ?? [];
+
+        $validation[ $fieldName ] = [
+            'valid' => $isValid,
+            'tag' => $errorTag
+        ];
+
+        $this->getModel()['skyline-validation'] = $validation;
+        return $isValid;
     }
 
     /**
