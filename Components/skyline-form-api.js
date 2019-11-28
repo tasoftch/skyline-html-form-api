@@ -36,7 +36,7 @@ $(function() {
         console.error("You need to install skyline/component-api before using the skyline/html-form-api package.");
     else {
         window.Skyline.API.Form = function(targetAPI, fd, successFunction, errorFunction) {
-            window.Skyline.API.post(targetAPI, fd)
+            return window.Skyline.API.post(targetAPI, fd)
                 .success(function(data) {
                     var ok = true;
 
@@ -77,7 +77,6 @@ $(function() {
                     if(errorFunction)
                         window.setTimeout(errorFunction, 1, error, false);
                 })
-                .button(".action-button")
         }
     }
 });
