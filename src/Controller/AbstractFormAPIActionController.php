@@ -52,7 +52,7 @@ abstract class AbstractFormAPIActionController extends AbstractAPIActionControll
     public function performAction(ActionDescriptionInterface $actionDescription, RenderInfoInterface $renderInfo)
     {
         if(!$this->isPreflightRequest($this->request)) {
-            $renderInfo->set( RenderInfoInterface::INFO_PREFERRED_RENDER, JSONRender::JSON_RENDER_NAME);
+            $renderInfo->set( RenderInfoInterface::INFO_PREFERRED_RENDER, JSONRender::RENDER_NAME);
         }
         return parent::performAction($actionDescription, $renderInfo);
     }
