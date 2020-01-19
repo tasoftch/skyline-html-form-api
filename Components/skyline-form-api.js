@@ -44,13 +44,21 @@ $(function() {
                         for(const nam in data["skyline-validation"]) {
                             $control = $( document.getElementsByName( nam ) );
                             if($control.length > 0) {
+                                var ivc = $control.attr("data-skyline-invalid");
+                                var vc = $control.attr("data-skyline-ivalid");
+                                if(!ivc)
+                                    ivc = this.INVALID_CONTROL_CLASS;
+                                if(!vc)
+                                    vc = this.VALID_CONTROL_CLASS;
+
+
                                 if(data["skyline-validation"][nam].valid) {
-                                    $control.removeClass( $control.attr("data-skyline-invalid") );
-                                    $control.addClass( $control.attr("data-skyline-valid") );
+                                    $control.removeClass( ivc );
+                                    $control.addClass( vc );
                                 } else {
                                     ok = false;
-                                    $control.removeClass( $control.attr("data-skyline-valid") );
-                                    $control.addClass( $control.attr("data-skyline-invalid") );
+                                    $control.removeClass( vc );
+                                    $control.addClass( ivc );
                                 }
 
                                 var tag = data["skyline-validation"][nam].tag;
@@ -77,6 +85,9 @@ $(function() {
                     if(errorFunction)
                         window.setTimeout(errorFunction, 1, error, false);
                 })
-        }
+        };
+
+        window.API.Form.INVALID_CONTROL_CLASS = 'is-invalid';
+        window.API.Form.VALID_CONTROL_CLASS = 'is-valid';
     }
 });

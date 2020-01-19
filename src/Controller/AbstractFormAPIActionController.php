@@ -49,6 +49,8 @@ use TASoft\DI\Injector\CallbackInjector;
 
 abstract class AbstractFormAPIActionController extends AbstractAPIActionController
 {
+    use FormAPITrait;
+
     public function performAction(ActionDescriptionInterface $actionDescription, RenderInfoInterface $renderInfo)
     {
         if(!$this->isPreflightRequest($this->request)) {
@@ -77,27 +79,6 @@ abstract class AbstractFormAPIActionController extends AbstractAPIActionControll
                 }
             }
         }
-    }
-
-    /**
-     * Writes a form validation field to the model.
-     * Using skyline/html-form-api the javascript component is able to mark the field.
-     *
-     * @param string $fieldName
-     * @param bool $isValid
-     * @param int $errorTag
-     * @return bool
-     */
-    protected function writeRawValidationToModel(string $fieldName, bool $isValid = true, int $errorTag = 0) {
-        $validation = $this->getModel()['skyline-validation'] ?? [];
-
-        $validation[ $fieldName ] = [
-            'valid' => $isValid,
-            'tag' => $errorTag
-        ];
-
-        $this->getModel()['skyline-validation'] = $validation;
-        return $isValid;
     }
 
     /**
