@@ -87,7 +87,7 @@ $(function() {
                 })
         };
 
-        window.API.Form.INVALID_CONTROL_CLASS = 'is-invalid';
-        window.API.Form.VALID_CONTROL_CLASS = 'is-valid';
+        window.Skyline.API.Form.INVALID_CONTROL_CLASS = 'is-invalid';
+        window.Skyline.API.Form.VALID_CONTROL_CLASS = 'is-valid';
     }
 });
