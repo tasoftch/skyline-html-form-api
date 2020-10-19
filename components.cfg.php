@@ -32,27 +32,26 @@
  *
  */
 
-use Skyline\Compiler\CompilerContext;
+use Skyline\Component\Config\AbstractComponent;
 use Skyline\Component\Config\CSSComponent;
 use Skyline\Component\Config\JavaScriptPostLoadComponent;
 
-$apiFileJS = __DIR__ . "/Components/skyline-form-api.js";
-$apiFileCSS = __DIR__ . "/Components/skyline-form-api.css";
+$apiFileJS = __DIR__ . "/dist/skyline-form-api.min.js";
+$apiFileCSS = __DIR__ . "/dist/skyline-form-api.min.css";
 
 return [
-    "API-Form" => [
+    "APIForm" => [
         "js" => new JavaScriptPostLoadComponent(
-            "/Public/js/skyline-form-api.js",
-            'sha384-'.hash_file("sha384", $apiFileJS),
-            NULL,
-            CompilerContext::getCurrentCompiler()->getRelativeProjectPath($apiFileJS)
+        	... AbstractComponent::makeLocalFileComponentArguments(
+        		"/Public/Skyline/skyline-form-api.min.js",
+				$apiFileJS
+			)
         ),
         "css" => new CSSComponent(
-            "/Public/css/skyline-form-api.css",
-            'all',
-            'sha384-'.hash_file("sha384", $apiFileCSS),
-            NULL,
-            CompilerContext::getCurrentCompiler()->getRelativeProjectPath($apiFileCSS)
+			... AbstractComponent::makeLocalFileComponentArguments(
+				"/Public/Skyline/skyline-form-api.min.css",
+				$apiFileCSS
+			)
         ),
         "@require" => [
             "API"

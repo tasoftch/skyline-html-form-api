@@ -14,10 +14,12 @@ class APIAction implements ActionInterface
     private $successFunctionName;
     private $errorFunctionName;
 
-    /**
-     * APIAction constructor.
-     * @param string $apiURI
-     */
+	/**
+	 * APIAction constructor.
+	 * @param string $apiURI
+	 * @param string $successFunctionName
+	 * @param string $errorFunctionName
+	 */
     public function __construct(string $apiURI, $successFunctionName = "", $errorFunctionName = "")
     {
         $this->apiURI = $apiURI;
@@ -35,13 +37,11 @@ class APIAction implements ActionInterface
     public function makeAction(FormElement $form)
     {
         $form["action"] = "";
-        $form["onsubmit"] = preg_replace("/\s+/i", ' ', sprintf("return (function(sender) {
-try {
-var fd = new FormData(sender);
-window.Skyline.API.Form('%s', fd, %s, %s);
-} catch(e) { alert(e); }
+        $form["onsubmit"] = preg_replace("/\s+/i", ' ', sprintf("return(function(sender, Form){try {let fd=new FormData(sender);let opts={successHandler:%s,errorHandler:%s}
+Form('%s', fd, opts);
+} catch(e) { if(opts.errorHandler) opts.errorHandler.call(this,e); }
 return false;
-})(this);", $this->getApiURI(), $this->getSuccessFunctionName(), $this->getErrorFunctionName()));
+})(this, window.Skyline.API.Submit);", $this->getApiURI(), $this->getSuccessFunctionName(), $this->getErrorFunctionName()));
     }
 
     /**

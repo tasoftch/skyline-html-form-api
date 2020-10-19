@@ -47,9 +47,9 @@ class APIFormElement extends FormElement
         $cnt = $this->getControlByName($name);
         if($cnt) {
             if($valid = $validationClasses["valid"] ?? false)
-                $cnt["data-skyline-valid"] = $valid;
+                $cnt["data-valid-class"] = $valid;
             if($invalid = $validationClasses["invalid"] ?? false)
-                $cnt["data-skyline-invalid"] = $invalid;
+                $cnt["data-invalid-class"] = $invalid;
         }
         return parent::manualBuildControl($name, $additionalAttributes, $validationClasses);
     }

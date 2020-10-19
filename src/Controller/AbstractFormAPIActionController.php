@@ -45,6 +45,7 @@ use Skyline\HTML\Form\FormElement;
 use Skyline\Kernel\Service\SkylineServiceManager;
 use Skyline\Render\Info\RenderInfoInterface;
 use Skyline\Router\Description\ActionDescriptionInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use TASoft\DI\Injector\CallbackInjector;
 
@@ -54,15 +55,18 @@ abstract class AbstractFormAPIActionController extends AbstractAPIActionControll
 
     public function performAction(ActionDescriptionInterface $actionDescription, RenderInfoInterface $renderInfo)
     {
-        if(!$this->isPreflightRequest($this->request)) {
-            $renderInfo->set( RenderInfoInterface::INFO_PREFERRED_RENDER, JSONRender::RENDER_NAME);
+    	$request = $this->request;
+    	if($request instanceof Request) {
+			if(!$this->isPreflightRequest($request)) {
+				$renderInfo->set( RenderInfoInterface::INFO_PREFERRED_RENDER, JSONRender::RENDER_NAME);
 
-            $response = $this->response;
-            if($response instanceof Response) {
-            	$response->headers->set("Content-Type", 'application/json');
+				$response = $this->response;
+				if($response instanceof Response) {
+					$response->headers->set("Content-Type", 'application/json');
+				}
 			}
-        }
-        return parent::performAction($actionDescription, $renderInfo);
+		}
+        parent::performAction($actionDescription, $renderInfo);
     }
 
     /**

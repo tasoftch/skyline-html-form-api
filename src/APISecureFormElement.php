@@ -45,12 +45,12 @@ class APISecureFormElement extends SecureFormElement
     public function manualBuildControl(string $name, array $additionalAttributes = [], array $validationClasses = [])
     {
         $cnt = $this->getControlByName($name);
-        if($cnt) {
-            if($valid = $validationClasses["valid"] ?? false)
-                $cnt["data-skyline-valid"] = $valid;
-            if($invalid = $validationClasses["invalid"] ?? false)
-                $cnt["data-skyline-invalid"] = $invalid;
-        }
+		if($cnt) {
+			if($valid = $validationClasses["valid"] ?? false)
+				$cnt["data-valid-class"] = $valid;
+			if($invalid = $validationClasses["invalid"] ?? false)
+				$cnt["data-invalid-class"] = $invalid;
+		}
         return parent::manualBuildControl($name, $additionalAttributes, $validationClasses);
     }
 }

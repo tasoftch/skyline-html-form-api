@@ -1,0 +1,18 @@
+
+%skyline-tagged-feedback {
+  display: none !important;
+}
+
+%skyline-tagged-feedback-vis {
+  display: block !important;
+}
+
+@for $e from 1 through 10 {
+  .skyline-tagged-feedback .fb-#{$e} {
+    @extend %skyline-tagged-feedback;
+  }
+
+  .skyline-tagged-feedback.fb-#{$e} .fb-#{$e} {
+    @extend %skyline-tagged-feedback-vis;
+  }
+}
