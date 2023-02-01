@@ -48,7 +48,7 @@ trait FormAPITrait
      * @param string $fieldName
      * @param bool $isValid
      * @param int $errorTag
-     * @return bool
+     * @return static
      */
     protected function writeRawValidationToModel(string $fieldName, bool $isValid = true, int $errorTag = 0) {
         $validation = $this->getModel()['skyline-validation'] ?? [];
@@ -58,7 +58,8 @@ trait FormAPITrait
             'tag' => $errorTag
         ];
 
-        $this->getModel()['skyline-validation'] = $validation;
-        return $isValid;
+        $model = $this->getModel();
+		$model['skyline-validation'] = $validation;
+        return $this;
     }
 }

@@ -15,8 +15,8 @@
   "require" : {
     "php": ">=7.2",
     "skyline/html-form": "^0.8",
-    "skyline/api": "^0.8",
-    "skyline/component-api": "^0.8"
+    "skyline/api": "^0.9",
+    "skyline/component-api": "^0.9"
   },
   "require-dev": {
     "phpunit/phpunit": "^6",
