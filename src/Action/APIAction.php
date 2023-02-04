@@ -37,11 +37,12 @@ class APIAction implements ActionInterface
     public function makeAction(FormElement $form)
     {
         $form["action"] = "";
-        $form["onsubmit"] = preg_replace("/\s+/i", ' ', sprintf("return(function(sender, Form){try {let fd=new FormData(sender);let opts={successHandler:%s,errorHandler:%s}
-Form('%s', fd, opts);
+        $form["onsubmit"] = preg_replace("/\s+/i", ' ', sprintf("return(function(sender, Form){try {let fd=new FormData(sender);let opts={successHandler:%s,errorHandler:%s};
+const frm = Form(%s, fd, opts);
+if(sender.submitted) frm.button($(sender.submitted));
 } catch(e) { if(opts.errorHandler) opts.errorHandler.call(this,e); }
 return false;
-})(this, window.Skyline.API.Submit);", $this->getApiURI(), $this->getSuccessFunctionName(), $this->getErrorFunctionName()));
+})(this, window.Skyline.API.Submit);", $this->getSuccessFunctionName() ?: "null", $this->getErrorFunctionName() ?: "null", var_export($this->getApiURI(), true)));
     }
 
     /**

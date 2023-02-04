@@ -58,7 +58,7 @@
                                 }
 
                                 let tag = response.tag;
-                                let $parent = parentHandler($control);
+                                let $parent = typeof options.parentHandler === 'function' ? options.parentHandler($control) : $control.parent();
 
                                 $parent.removeClass("skyline-tagged-feedback");
                                 for(let e=1;e<=10;e++)

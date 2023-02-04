@@ -1,6 +1,6 @@
 {
   "name": "skyline-form-api",
-  "version": "0.8.5",
+  "version": "0.8.6",
   "description": "Form api extension to send form contents by api calls",
   "scripts": {
     "v:patch": "npm version --no-git-tag-version patch",
