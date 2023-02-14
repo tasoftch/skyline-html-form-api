@@ -50,7 +50,10 @@ return [
         "css" => new CSSComponent(
 			... AbstractComponent::makeLocalFileComponentArguments(
 				"/Public/Skyline/skyline-form-api.min.css",
-				$apiFileCSS
+				$apiFileCSS,
+				"sha384",
+				NULL,
+				'all'
 			)
         ),
         "@require" => [
