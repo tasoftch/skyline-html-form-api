@@ -84,7 +84,7 @@ abstract class AbstractFormAPIActionController extends AbstractAPIActionControll
                     $this->writeRawValidationToModel(
                         $control->getName(),
                         $control->isValid(),
-                        method_exists($control->getStoppedValidator(), 'getTag') ? $control->getStoppedValidator()->getTag() : 0
+						$control->getStoppedValidator() ? (method_exists($control->getStoppedValidator(), 'getTag') ? $control->getStoppedValidator()->getTag() : 0) : 0
                     );
                 }
             }
